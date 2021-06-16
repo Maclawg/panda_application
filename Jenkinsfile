@@ -62,11 +62,31 @@ pipeline {
                     sh "mvn -gs $MAVEN_GLOBAL_SETTINGS deploy -Dmaven.test.skip=true"
                 }
             }
-            post {
-                always {
-                    sh 'docker stop pandaapp'
-                    deleteDir()
+        }
+        stage('Run terraform') {
+            steps {
+                dir('infrastructure/terraform') {
+                    sh 'terraform init && terraform apply -auto-approve'
                 }
+            }
+        }
+        stage('Copy Ansible role') {
+            steps {
+                sh 'cp -r infrastructure/ansible/panda/ /etc/ansible/roles/'
+            }
+        }
+        stage('Run Ansible') {
+            steps {
+                dir('infrastructure/ansible') {
+                    sh 'chmod 600 ../terraform.pem'
+                    sh 'ansible-playbook -i ./inventory playbook.yml'
+                }    
+            }
+        }
+        post {
+            always {
+                sh 'docker stop pandaapp'
+                deleteDir()
             }
         }
     }
