@@ -69,7 +69,7 @@ pipeline {
         stage('Run terraform') {
             steps {
                 dir('infrastructure/terraform') {
-                    sh 'terraform init && terraform apply -var-file ./terraform/panda.tfvars -auto-approve'
+                    sh 'terraform init && terraform apply -var-file ./panda.tfvars -auto-approve'
                 }
             }
         }
