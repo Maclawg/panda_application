@@ -13,9 +13,6 @@ pipeline {
     agent {
         label 'slave'
     }
-    tools {
-        terraform 'Terraform'
-    }
     environment {
         //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
         IMAGE = readMavenPom().getArtifactId()
@@ -25,12 +22,14 @@ pipeline {
         //VERSION = "?"
     }
     tools {
+        terraform 'Terraform'
         maven "m3"
     }
     stages {
         stage('Git pull') {
             steps {
-                git branch: 'selenium_grid', url: 'https://github.com/Maclawg/panda_application.git'
+                checkout scm
+                //git branch: 'final', url: 'https://github.com/Maclawg/panda_application.git'
             }
         }
         stage('Clean running pandaapp') {
