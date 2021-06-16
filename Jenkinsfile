@@ -13,10 +13,14 @@ pipeline {
     agent {
         label 'slave'
     }
+    tools {
+        terraform 'Terraform'
+    }
     environment {
         //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
         IMAGE = readMavenPom().getArtifactId()
         VERSION = readMavenPom().getVersion()
+        ANSIBLE = tool name: 'Ansible', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
         //IMAGE = "?"
         //VERSION = "?"
     }
