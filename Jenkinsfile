@@ -86,11 +86,11 @@ pipeline {
                 }    
             }
         }
-        post {
-            always {
-                sh 'docker stop pandaapp'
-                deleteDir()
-            }
+    }
+    post {
+        always {
+            sh 'docker stop pandaapp'
+            deleteDir()
         }
     }
 }
