@@ -1,2 +1,2 @@
-aws_key_name = "terraform"
-ssh_key_path="../terraform.pem"
+aws_key_name = "panda"
+ssh_key_path="../panda.pem"
